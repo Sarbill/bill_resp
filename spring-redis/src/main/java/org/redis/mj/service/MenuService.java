@@ -41,6 +41,7 @@ public class MenuService {
     }
 
 
+
     @Cacheable(value = "queryCity",key = "#citycode")
     public List<City> queryCity(String citycode){
         City city=new City();
