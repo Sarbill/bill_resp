@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+import static java.lang.Math.random;
+
 /**
  * Created by hx on 2017/2/3.
  */
@@ -65,6 +68,29 @@ public class MenuController {
         city.setCitycode(citycode);
         Map<String,Object> res=service.updateCity(city);
 
+
+        return res;
+    }
+
+    @RequestMapping(value = "/queryFromRedis.do")
+    @ResponseBody
+    public Map<String,Object> queryFromRedis(String citycode){
+        logger.info("queryFromRedis:{}",citycode);
+        Map<String,Object> res=service.queryFromRedis(citycode);
+        return res;
+    }
+
+    @RequestMapping(value = "/saveToRedis.do")
+    @ResponseBody
+    public Map<String,Object> saveToRedis(String citycode){
+        logger.info("saveToRedis:{}",citycode);
+       City city=new City();
+       int id= (int) ((random()*9+1)*1000);
+        city.setId(String.valueOf(id));
+        city.setCitycode(citycode);
+        city.setState("启用");
+        city.setCityname("武汉");
+        Map<String,Object> res=service.saveToRedis(city);
 
         return res;
     }
