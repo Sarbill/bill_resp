@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by hx on 2017/2/4.
@@ -87,6 +88,7 @@ public class MenuService {
         Map<String,Object> res=new HashMap<String,Object>();
         if(null!=city){
             redisTemplate.opsForValue().set("City.citycode."+city.getCitycode(),city);
+            redisTemplate.expire("City.citycode."+city.getCitycode(),10, TimeUnit.SECONDS);
 
         }
         res.put("success",true);
