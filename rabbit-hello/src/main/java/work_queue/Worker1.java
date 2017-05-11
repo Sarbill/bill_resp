@@ -17,7 +17,8 @@ public class Worker1 {
 
         try {
             final Channel channel=getChannel();
-            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            boolean durable=true;
+            channel.queueDeclare(QUEUE_NAME, durable, false, false, null);
             System.out.println("waiting for message!");
             /**
              * 公平转发（Fair dispatch）
