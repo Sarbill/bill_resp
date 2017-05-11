@@ -26,7 +26,7 @@ public class Recv {
                 }
 
             };
-            channel.basicConsume(QUEUE_NAME, true, consumer);
+            channel.basicConsume(QUEUE_NAME, true, consumer);//设置为true代表server默认消息已被消费，设置为false则能重新指派消息
 
         } catch (IOException e) {
             e.printStackTrace();
