@@ -24,6 +24,7 @@ public class NewTask {
 
         try {
             Channel channel=getChannel();
+            channel.queueDelete("work_queue");
             boolean durable=true;//消息持久化
             channel.queueDeclare(QUEUE_NAME, durable, false, false, null);//设置durable为ture,则rabbitmq重启后不会丢失队列，可以理解为持久化队列
             StringBuilder message=new StringBuilder("hello,world");

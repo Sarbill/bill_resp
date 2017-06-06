@@ -46,6 +46,7 @@ public class Worker1 {
             channel.basicConsume(QUEUE_NAME, false, consumer);
 
 
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (TimeoutException e) {
