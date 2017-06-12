@@ -1,0 +1,157 @@
+package org.aisino.cgswxj.controller;
+
+import org.aisino.App;
+import org.aisino.cgswxj.task.DelSbxxTask;
+import org.aisino.cgswxj.task.SynJsDaxx;
+import org.aisino.cgswxj.task.ZfSbxxTask;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+/**
+*@description:终端接口单元测试
+*@author zh
+*@date 2017-3-13-下午6:57:55
+*/
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = App.class,webEnvironment=WebEnvironment.RANDOM_PORT)
+public class ZdControllerTest {
+    private  final  static  String host= "http://localhost:";
+    private  ObjectMapper om = new ObjectMapper();
+    @Value("${local.server.port}")
+    int port;
+    @Autowired
+    private TestRestTemplate template;
+    @Autowired
+    private ZfSbxxTask ZfSbxxTask;
+    @Autowired
+    private SynJsDaxx synJsDaxx;
+    @Autowired
+    private DelSbxxTask delSbxxTask;
+    
+    
+  //查询申报信息
+    @Test
+    public void testQuerySbxx() {
+        String zdid ="";
+        String sbxxid="a90ee13bddb2459bad31634970a3b201";
+        String nsrsbh = "422123197210140581";
+        String param = "sbxxid="+sbxxid;
+//        String param = "nsrsbh="+nsrsbh;
+//        String url = host+port+"/zd/querysbxxbyNsrsbh?"+param;
+        String url = host+port+"/zd/querysbxx?"+param;
+        String res = template.postForObject(url, null, String.class);
+        System.out.println(res);
+    }
+    
+    
+  //查询申报信息
+    @Test
+    public void testYztqm() {
+        String tqyzm="425434";
+        String url = host+port+"/zd/yzmtq?"+"tqyzm="+tqyzm;
+        String res = template.postForObject(url, null, String.class);
+        System.out.println(res);
+    }
+    
+    //查询税收完税证明
+    @Test
+    public void testQuerySswszm() {
+        String zdid ="";
+        String sbxxid="d84128a94e894fe9bb6cd52819294ce4";
+        String swrydm="111";
+        String swrymc="税务人员名称";
+        String swjgdm="222";
+        String swjgmc="税务机关名称";
+        String sswszmdm="333";
+        String sswszmmc="税收完税证明名称";
+        String param = "zdid="+zdid+"&sbxxid="+sbxxid+"&swrydm="+swrydm+"&swrymc="+swrymc+"&swjgdm="+swjgdm+"&swjgmc="+swjgmc+"&sswszmdm="+sswszmdm+"&sswszmmc="+sswszmmc;
+        String url = host+port+"/zd/querySswszm?"+param;
+        String res = template.postForObject(url, null, String.class);
+        System.out.println(res);
+    }
+    
+    
+    //打印税收完税证明
+    @Test
+    public void testDySswszm() {
+        String zdid ="";
+        String sbxxid="d84128a94e894fe9bb6cd52819294ce4";
+        String swrydm="111";
+        String swrymc="税务人员名称";
+        String swjgdm="222";
+        String swjgmc="税务机关名称";
+        String sswszmdm="333";
+        String sswszmmc="税收完税证明名称";
+        String param = "zdid="+zdid+"&sbxxid="+sbxxid+"&swrydm="+swrydm+"&swrymc="+swrymc+"&swjgdm="+swjgdm+"&swjgmc="+swjgmc+"&sswszmdm="+sswszmdm+"&sswszmmc="+sswszmmc;
+        String url = host+port+"/zd/dySswszm?"+param;
+        String res = template.postForObject(url, null, String.class);
+        System.out.println(res);
+    }
+    
+    //查询完税证明
+    @Test
+    public void testQueryWszmxx() {
+        String zdid ="";
+        String sbxxid="d84128a94e894fe9bb6cd52819294ce4";
+        String swrydm="111";
+        String swrymc="税务人员名称";
+        String swjgdm="222";
+        String swjgmc="税务机关名称";
+        String wszmdm="444";
+        String wszmmc="完税证明名称";
+        String param = "zdid="+zdid+"&sbxxid="+sbxxid+"&swrydm="+swrydm+"&swrymc="+swrymc+"&swjgdm="+swjgdm+"&swjgmc="+swjgmc+"&wszmdm="+wszmdm+"&wszmmc="+wszmmc;
+        String url = host+port+"/zd/queryWszmxx?"+param;
+        String res = template.postForObject(url, null, String.class);
+        System.out.println(res);
+    }
+    
+    //打印完税证明
+    @Test
+    public void testDywszm() {
+        String zdid ="";
+        String sbxxid="d84128a94e894fe9bb6cd52819294ce4";
+        String swrydm="111";
+        String swrymc="税务人员名称";
+        String swjgdm="222";
+        String swjgmc="税务机关名称";
+        String wszmdm="444";
+        String wszmmc="完税证明名称";
+        String zdid="hsssssd123";
+        String param = "zdid="+zdid+"&sbxxid="+sbxxid+"&swrydm="+swrydm+"&swrymc="+swrymc+"&swjgdm="+swjgdm+"&swjgmc="+swjgmc+"&wszmdm="+wszmdm+"&wszmmc="+wszmmc+"&zdid="+zdid;
+        String url = host+port+"/zd/dywszm?"+param;
+        String res = template.postForObject(url, null, String.class);
+        System.out.println(res);
+    }
+    
+    /*
+     * 半小时为缴税作废电子税票
+     */
+    @Test
+    public void testZfsbxxTask() {
+    	ZfSbxxTask.zfSbxx();
+    }
+    
+    /*
+     *定时同步金三档案信息 
+     */
+    @Test
+    public void testSynJsDaxx() {
+    	synJsDaxx.synDaxx();
+    }
+    /*
+     *定时删除申报信息 
+     */
+    @Test
+    public void testDelSbxx() {
+    	delSbxxTask.delSbxx();
+    }
+
+}

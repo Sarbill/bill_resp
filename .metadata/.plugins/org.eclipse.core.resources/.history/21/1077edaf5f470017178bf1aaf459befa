@@ -1,0 +1,5 @@
+#所属地区 hubei、dalian、jiangxi、shenzhen
+ssdq = hubei
+account = hexing
+password = ts123456
+wx_host =http://127.0.0.1:9999

@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.aisino.cgswxj.dao.SbxxDao">
+	<select id="querySbxx"  parameterType="string"  resultMap="SbxxResultMap">
+		select s.id,
+       s.djxh,
+       s.nsrsbh,
+       s.nsrmc,
+       s.nsrsfzjzl,
+       s.nsrsfzjhm,
+       s.nsrlxdh,
+       s.gbhy,
+       s.hymx,
+       s.djzclx,
+       s.nsrlxdz,
+       s.clhgzbh,
+       s.cjhm,
+       s.fdjhm,
+       s.clcp,
+       s.clxh,
+       s.cllb,
+       s.cllx,
+       s.dw,
+       s.zw,
+       s.pql,
+       s.rlzl,
+       s.scqymc,
+       s.cdsx,
+       s.zypz,
+       s.clcpxh,
+       s.clxlh,
+       s.fpdm,
+       s.fphm,
+       s.fpjg,
+       s.kprq,
+       s.xjrq,
+       s.bhsje,
+       s.jxsnsrsbh,
+       s.sbzt,
+       s.sbuuid,
+       s.wszmxxid,
+       s.yzpzxh,
+       s.fpjgzsbz,
+       s.sswszmid,
+       s.jmzsbz,
+       s.openid,
+       s.spdid,
+       s.qpfs,
+       s.yjxxid,
+       s.tqyzm,
+		y.id			 "yzxx.id",
+		y.zsuuid         "yzxx.zsuuid",
+		y.yzpzxh         "yzxx.yzpzxh",
+		y.yzpzmxxh       "yzxx.yzpzmxxh",
+		y.glyzpzmxxh     "yzxx.glyzpzmxxh",
+		y.yzpzzldm       "yzxx.yzpzzldm",
+		y.zsdlfsdm       "yzxx.zsdlfsdm",
+		y.nssbrq         "yzxx.nssbrq",
+		y.yzfsrq         "yzxx.yzfsrq",
+		y.yzgsrq         "yzxx.yzgsrq",
+		y.sl1            "yzxx.sl1",
+		y.ynse           "yzxx.ynse",
+		y.jmse           "yzxx.jmse",
+		y.yjse           "yzxx.yjse",
+		y.ybtse          "yzxx.ybtse",
+		y.znjje          "yzxx.znjje",
+		y.fkje           "yzxx.fkje",
+		y.lxje           "yzxx.lxje",
+		y.zsxmdm         "yzxx.zsxmdm",
+		y.zspmdm         "yzxx.zspmdm",
+		y.skssqq         "yzxx.skssqq",
+		y.skssqz         "yzxx.skssqz",
+		y.skssswjgdm     "yzxx.skssswjgdm",
+		y.zgswskfjdm     "yzxx.zgswskfjdm",
+		y.zsswjgdm       "yzxx.zsswjgdm",
+		y.bz             "yzxx.bz",
+		y.cjhm           "yzxx.cjhm",
+		y.dzsphm         "yzxx.dzsphm",
+		y.spuuid         "yzxx.spuuid",
+		y.djxh           "yzxx.djxh",
+		y.openid         "yzxx.openid"
+  from cgs_wx_yw_sbxx s
+  left join cgs_wx_yw_yzxx y
+    on s.yzpzxh = y.yzpzxh
+ where s.id = #{sbxxid}
+	</select>
+	
+	<select id="querySbxxbyParam"  parameterType="SbxxVo"  resultMap="SbxxResultMap">
+		select s.id,
+       s.djxh,
+       s.nsrsbh,
+       s.nsrmc,
+       s.nsrsfzjzl,
+       s.nsrsfzjhm,
+       s.nsrlxdh,
+       s.gbhy,
+       s.hymx,
+       s.djzclx,
+       s.nsrlxdz,
+       s.clhgzbh,
+       s.cjhm,
+       s.fdjhm,
+       s.clcp,
+       s.clxh,
+       s.cllb,
+       s.cllx,
+       s.dw,
+       s.zw,
+       s.pql,
+       s.rlzl,
+       s.scqymc,
+       s.cdsx,
+       s.zypz,
+       s.clcpxh,
+       s.clxlh,
+       s.fpdm,
+       s.fphm,
+       s.fpjg,
+       s.kprq,
+       s.xjrq,
+       s.bhsje,
+       s.jxsnsrsbh,
+       s.sbzt,
+       s.sbuuid,
+       s.wszmxxid,
+       s.yzpzxh,
+       s.fpjgzsbz,
+       s.sswszmid,
+       s.jmzsbz,
+       s.openid,
+       s.spdid,
+       s.qpfs,
+       s.yjxxid,
+       s.tqyzm,
+		y.id			 "yzxx.id",
+		y.zsuuid         "yzxx.zsuuid",
+		y.yzpzxh         "yzxx.yzpzxh",
+		y.yzpzmxxh       "yzxx.yzpzmxxh",
+		y.glyzpzmxxh     "yzxx.glyzpzmxxh",
+		y.yzpzzldm       "yzxx.yzpzzldm",
+		y.zsdlfsdm       "yzxx.zsdlfsdm",
+		y.nssbrq         "yzxx.nssbrq",
+		y.yzfsrq         "yzxx.yzfsrq",
+		y.yzgsrq         "yzxx.yzgsrq",
+		y.sl1            "yzxx.sl1",
+		y.ynse           "yzxx.ynse",
+		y.jmse           "yzxx.jmse",
+		y.yjse           "yzxx.yjse",
+		y.ybtse          "yzxx.ybtse",
+		y.znjje          "yzxx.znjje",
+		y.fkje           "yzxx.fkje",
+		y.lxje           "yzxx.lxje",
+		y.zsxmdm         "yzxx.zsxmdm",
+		y.zspmdm         "yzxx.zspmdm",
+		y.skssqq         "yzxx.skssqq",
+		y.skssqz         "yzxx.skssqz",
+		y.skssswjgdm     "yzxx.skssswjgdm",
+		y.zgswskfjdm     "yzxx.zgswskfjdm",
+		y.zsswjgdm       "yzxx.zsswjgdm",
+		y.bz             "yzxx.bz",
+		y.cjhm           "yzxx.cjhm",
+		y.dzsphm         "yzxx.dzsphm",
+		y.spuuid         "yzxx.spuuid",
+		y.djxh           "yzxx.djxh",
+		y.openid         "yzxx.openid"
+  from cgs_wx_yw_sbxx s
+  left join cgs_wx_yw_yzxx y
+    on s.yzpzxh = y.yzpzxh
+ where 1=1  
+ 	<if test="sbxxid!=null and sbxxid!=''">
+ 		and s.id = #{sbxxid}
+ 	</if>
+ 	<if test="nsrsbh!=null and nsrsbh!=''">
+ 		and s.nsrsbh = #{nsrsbh}
+ 	</if>
+ 	<if test="djxh!=null and djxh!=''">
+ 		and s.djxh = #{djxh}
+ 	</if>
+ 	<if test="sbzt!=null and sbzt!=''">
+ 		and s.sbzt = #{sbzt}
+ 	</if>
+ 	<if test="tqyzm!=null and tqyzm!=''">
+ 		and s.tqyzm= #{tqyzm}
+ 	</if>
+ 	<if test="qpfs!=null and qpfs!=''">
+ 		and s.qpfs=#{qpfs}
+ 	</if>
+	</select>
+	
+	
+	<select id="querySbxxByOpenid"  parameterType="SbxxVo"  resultMap="SbxxResultMap">
+		select s.id,
+       s.djxh,
+       s.nsrsbh,
+       s.nsrmc,
+       s.nsrsfzjzl,
+       s.nsrsfzjhm,
+       s.nsrlxdh,
+       s.gbhy,
+       s.hymx,
+       s.djzclx,
+       s.nsrlxdz,
+       s.clhgzbh,
+       s.cjhm,
+       s.fdjhm,
+       s.clcp,
+       s.clxh,
+       s.cllb,
+       s.dw,
+       s.zw,
+       s.pql,
+       s.rlzl,
+       s.scqymc,
+       s.cdsx,
+       s.zypz,
+       s.clcpxh,
+       s.clxlh,
+       s.fpdm,
+       s.fphm,
+       s.fpjg,
+       s.kprq,
+       s.xjrq,
+       s.bhsje,
+       s.jxsnsrsbh,
+       s.sbzt,
+       decode(s.sbzt,'0','未申报','1','已申报','2','待缴款','3','已交款','4','已打税收完税证明','5','已完成','6','快递中','-1','作废','其他状态') sbztmc,
+       s.sbuuid,
+       s.wszmxxid,
+       s.yzpzxh,
+       s.fpjgzsbz,
+       s.sswszmid,
+       s.jmzsbz,
+       s.openid,
+       s.spdid,
+       s.qpfs,
+       s.yjxxid,
+       s.tqyzm,
+       to_char(s.createtime,'yyyy-mm-dd hh24:mi:ss') createtime,
+		y.id			 "yzxx.id",
+		y.zsuuid         "yzxx.zsuuid",
+		y.yzpzxh         "yzxx.yzpzxh",
+		y.yzpzmxxh       "yzxx.yzpzmxxh",
+		y.glyzpzmxxh     "yzxx.glyzpzmxxh",
+		y.yzpzzldm       "yzxx.yzpzzldm",
+		y.zsdlfsdm       "yzxx.zsdlfsdm",
+		y.nssbrq         "yzxx.nssbrq",
+		y.yzfsrq         "yzxx.yzfsrq",
+		y.yzgsrq         "yzxx.yzgsrq",
+		y.sl1            "yzxx.sl1",
+		y.ynse           "yzxx.ynse",
+		y.jmse           "yzxx.jmse",
+		y.yjse           "yzxx.yjse",
+		y.ybtse          "yzxx.ybtse",
+		y.znjje          "yzxx.znjje",
+		y.fkje           "yzxx.fkje",
+		y.lxje           "yzxx.lxje",
+		y.zsxmdm         "yzxx.zsxmdm",
+		y.zspmdm         "yzxx.zspmdm",
+		y.skssqq         "yzxx.skssqq",
+		y.skssqz         "yzxx.skssqz",
+		y.skssswjgdm     "yzxx.skssswjgdm",
+		y.zgswskfjdm     "yzxx.zgswskfjdm",
+		y.zsswjgdm       "yzxx.zsswjgdm",
+		y.bz             "yzxx.bz",
+		y.cjhm           "yzxx.cjhm",
+		y.dzsphm         "yzxx.dzsphm",
+		y.spuuid         "yzxx.spuuid",
+		y.djxh           "yzxx.djxh",
+		y.openid         "yzxx.openid"
+       
+  from cgs_wx_yw_sbxx s
+  left join cgs_wx_yw_yzxx y
+    on s.yzpzxh = y.yzpzxh
+ where 1=1
+ <if test="openid!=null and openid!=''">
+ 		and s.openid = #{openid}
+ </if>
+ <if test="sbxxid!=null and sbxxid!=''">
+ 		and s.id = #{sbxxid}
+ </if>
+ <if test="starttime!=null and starttime!=''">
+ 		and to_date(#{starttime}, 'yyyy-mm-dd hh24:mi:ss') <![CDATA[<=]]>
+       s.createtime
+ </if>
+ <if test="endtime!=null and endtime!=''">
+ 		and to_date(#{endtime}, 'yyyy-mm-dd hh24:mi:ss') <![CDATA[>=]]>
+       s.createtime
+ </if>
+	</select>
+	
+	<select id="querySbxxforzf" resultMap="SbxxResultMap">
+		select s.id,
+       s.djxh,
+       s.nsrsbh,
+       s.nsrmc,
+       s.nsrsfzjzl,
+       s.nsrsfzjhm,
+       s.nsrlxdh,
+       s.gbhy,
+       s.hymx,
+       s.djzclx,
+       s.nsrlxdz,
+       s.clhgzbh,
+       s.cjhm,
+       s.fdjhm,
+       s.clcp,
+       s.clxh,
+       s.cllb,
+       s.cllx,
+       s.dw,
+       s.zw,
+       s.pql,
+       s.rlzl,
+       s.scqymc,
+       s.cdsx,
+       s.zypz,
+       s.clcpxh,
+       s.clxlh,
+       s.fpdm,
+       s.fphm,
+       s.fpjg,
+       s.kprq,
+       s.xjrq,
+       s.bhsje,
+       s.jxsnsrsbh,
+       s.sbzt,
+       s.sbuuid,
+       s.wszmxxid,
+       s.yzpzxh,
+       s.fpjgzsbz,
+       s.sswszmid,
+       s.jmzsbz,
+       s.openid,
+       s.spdid,
+       s.qpfs,
+       s.yjxxid,
+		y.id			 "yzxx.id",
+		y.zsuuid         "yzxx.zsuuid",
+		y.yzpzxh         "yzxx.yzpzxh",
+		y.yzpzmxxh       "yzxx.yzpzmxxh",
+		y.glyzpzmxxh     "yzxx.glyzpzmxxh",
+		y.yzpzzldm       "yzxx.yzpzzldm",
+		y.zsdlfsdm       "yzxx.zsdlfsdm",
+		y.nssbrq         "yzxx.nssbrq",
+		y.yzfsrq         "yzxx.yzfsrq",
+		y.yzgsrq         "yzxx.yzgsrq",
+		y.sl1            "yzxx.sl1",
+		y.ynse           "yzxx.ynse",
+		y.jmse           "yzxx.jmse",
+		y.yjse           "yzxx.yjse",
+		y.ybtse          "yzxx.ybtse",
+		y.znjje          "yzxx.znjje",
+		y.fkje           "yzxx.fkje",
+		y.lxje           "yzxx.lxje",
+		y.zsxmdm         "yzxx.zsxmdm",
+		y.zspmdm         "yzxx.zspmdm",
+		y.skssqq         "yzxx.skssqq",
+		y.skssqz         "yzxx.skssqz",
+		y.skssswjgdm     "yzxx.skssswjgdm",
+		y.zgswskfjdm     "yzxx.zgswskfjdm",
+		y.zsswjgdm       "yzxx.zsswjgdm",
+		y.bz             "yzxx.bz",
+		y.cjhm           "yzxx.cjhm",
+		y.dzsphm         "yzxx.dzsphm",
+		y.spuuid         "yzxx.spuuid",
+		y.djxh           "yzxx.djxh",
+		y.openid         "yzxx.openid"
+  from cgs_wx_yw_sbxx s
+  left join cgs_wx_yw_yzxx y
+    on s.yzpzxh = y.yzpzxh
+ where (s.sbzt = '1' or s.sbzt ='2') and (sysdate - s.createtime) * 24  > 1 and trunc(s.createtime,'dd')=trunc(sysdate,'dd') 
+	</select>
+		
+	<update id="updateSbxx" parameterType="SbxxVo">
+		update cgs_wx_yw_sbxx set id=#{id}
+		<if test="spdid!=null and spdid!=''">
+			,spdid=#{spdid}
+		</if>
+		<if test="djxh!=null and djxh!=''">
+			,djxh=#{djxh}
+		</if>
+		<if test="nsrsbh!=null and nsrsbh!=''">
+			,nsrsbh=#{nsrsbh}
+		</if>
+		<if test="nsrmc!=null and nsrmc!=''">
+			,nsrmc=#{nsrmc}
+		</if>
+		<if test="nsrsfzjzl!=null and nsrsfzjzl!=''">
+			,nsrsfzjzl=#{nsrsfzjzl}
+		</if>
+		<if test="nsrsfzjhm!=null and nsrsfzjhm!=''">
+			,nsrsfzjhm=#{nsrsfzjhm}
+		</if>
+		<if test="nsrlxdh!=null and nsrlxdh!=''">
+			,nsrlxdh=#{nsrlxdh}
+		</if>
+		<if test="gbhy!=null and gbhy!=''">
+			,gbhy=#{gbhy}
+		</if>
+		<if test="hymx!=null and hymx!=''">
+			,hymx=#{hymx}
+		</if>
+		<if test="djzclx!=null and djzclx!=''">
+			,djzclx=#{djzclx}
+		</if>
+		<if test="nsrlxdz!=null and nsrlxdz!=''">
+			,nsrlxdz=#{nsrlxdz}
+		</if>
+		<if test="clhgzbh!=null and clhgzbh!=''">
+			,clhgzbh=#{clhgzbh}
+		</if>
+		<if test="cjhm!=null and cjhm!=''">
+			,cjhm=#{cjhm}
+		</if>
+		<if test="fdjhm!=null and fdjhm!=''">
+			,fdjhm=#{fdjhm}
+		</if>
+		<if test="clcp!=null and clcp!=''">
+			,clcp=#{clcp}
+		</if>
+		<if test="clxh!=null and clxh!=''">
+			,clxh=#{clxh}
+		</if>
+		<if test="cllb!=null and cllb!=''">
+			,cllb=#{cllb}
+		</if>
+		<if test="dw!=null and dw!=''">
+			,dw=#{dw}
+		</if>
+		<if test="zw!=null and zw!=''">
+			,zw=#{zw}
+		</if>
+		<if test="pql!=null and pql!=''">
+			,pql=#{pql}
+		</if>
+		<if test="rlzl!=null and rlzl!=''">
+			,rlzl=#{rlzl}
+		</if>
+		<if test="scqymc!=null and scqymc!=''">
+			,scqymc=#{scqymc}
+		</if>
+		<if test="cdsx!=null and cdsx!=''">
+			,cdsx=#{cdsx}
+		</if>
+		<if test="zypz!=null and zypz!=''">
+			,zypz=#{zypz}
+		</if>
+		<if test="clcpxh!=null and clcpxh!=''">
+			,clcpxh=#{clcpxh}
+		</if>
+		<if test="clxlh!=null and clxlh!=''">
+			,clxlh=#{clxlh}
+		</if>
+		<if test="fpdm!=null and fpdm!=''">
+			,fpdm=#{fpdm}
+		</if>
+		<if test="fphm!=null and fphm!=''">
+			,fphm=#{fphm}
+		</if>
+		<if test="fpjg!=null and fpjg!=''">
+			,fpjg=#{fpjg}
+		</if>
+		<if test="kprq!=null and kprq!=''">
+			,kprq=#{kprq}
+		</if>
+		<if test="xjrq!=null and xjrq!=''">
+			,xjrq=#{xjrq}
+		</if>
+		<if test="bhsje!=null and bhsje!=''">
+			,bhsje=#{bhsje}
+		</if>
+		<if test="jxsnsrsbh!=null and jxsnsrsbh!=''">
+			,jxsnsrsbh=#{jxsnsrsbh}
+		</if>
+		<if test="sbzt!=null and sbzt!=''">
+			,sbzt=#{sbzt}
+		</if>
+		<if test="sbuuid!=null and sbuuid!=''">
+			,sbuuid=#{sbuuid}
+		</if>
+		<if test="wszmxxid!=null and wszmxxid!=''">
+			,wszmxxid=#{wszmxxid}
+		</if>
+		<if test="yzpzxh!=null and yzpzxh!=''">
+			,yzpzxh=#{yzpzxh}
+		</if>
+		<if test="fpjgzsbz!=null and fpjgzsbz!=''">
+			,fpjgzsbz=#{fpjgzsbz}
+		</if>
+		<if test="sswszmid!=null and sswszmid!=''">
+			,sswszmid=#{sswszmid}
+		</if>
+		<if test="jmzsbz!=null and jmzsbz!=''">
+			,jmzsbz=#{jmzsbz}
+		</if>
+		<if test="qpfs!=null and qpfs!=''">
+			,qpfs=#{qpfs}
+		</if>
+		<if test="yjxxid!=null and yjxxid!=''">
+			,yjxxid=#{yjxxid}
+		</if>
+		<if test="cllx!=null and cllx!=''">
+			,cllx=#{cllx}
+		</if>
+		<if test="zdjsjg!=null and zdjsjg!=''">
+			,zdjsjg=#{zdjsjg}
+		</if>
+		<if test="tqyzm!=null and tqyzm!=''">
+			,tqyzm=#{tqyzm}
+		</if>
+		where id = #{id}
+	</update>
+	
+	<insert id="addSbxx" parameterType="SbxxVo">
+	insert into cgs_wx_yw_sbxx
+         (id,
+          openid,
+          nsrsbh,
+          nsrmc,
+          nsrsfzjzl,
+          nsrsfzjhm,
+          nsrlxdh,
+          nsrlxdz,
+          clhgzbh,
+          cjhm,
+          fdjhm,
+          clcp,
+          dw,
+          zw,
+          pql,
+          cdsx,
+          fpdm,
+          fphm,
+          kprq,
+          fpjg,
+          bhsje,
+          jxsnsrsbh)
+       values
+         (#{id},
+          #{openid},
+          #{nsrsbh},
+          #{nsrmc},
+          #{nsrsfzjzl},
+          #{nsrsfzjhm},
+          #{nsrlxdh},
+          #{nsrlxdz},
+          #{clhgzbh,jdbcType=VARCHAR},
+          #{cjhm},
+          #{fdjhm},
+          #{clcp},
+          #{dw,jdbcType=NUMERIC},
+          #{zw,jdbcType=NUMERIC},
+          #{pql,jdbcType=NUMERIC},
+          #{cdsx},
+          #{fpdm},
+          #{fphm},
+          #{kprq},
+          #{fpjg},
+          #{bhsje},
+          #{jxsnsrsbh})
+
+	</insert>
+	<delete id="delSbxx">
+		delete from cgs_wx_yw_sbxx s where s.sbzt = '0' and (sysdate -s.createtime) * 24 * 60 >30 and to_char(sysdate,'yyyy-mm-dd') = to_char(s.createtime,'yyyy-mm-dd')
+	</delete>
+	<resultMap  type="SbxxVo"  id="SbxxResultMap">
+    		<id 	   property="id" 				column="id"    />
+    		<result property="djxh" 			column="djxh"   />
+    		<result property="nsrsbh" 		column="nsrsbh"   />
+    		<result property="nsrmc" 			column="nsrmc" />
+    		<result property="nsrsfzjzl" 			column="nsrsfzjzl" />
+    		<result property="nsrsfzjhm" 		column="nsrsfzjhm" 	/>
+    		<result property="nsrlxdh" 		column="nsrlxdh" 	/>
+    		<result property="gbhy" 		column="gbhy" 	/>
+    		<result property="hymx" 		column="hymx" 	/>
+    		<result property="djzclx" 		column="djzclx" 	/>
+    		<result property="nsrlxdz" 		column="nsrlxdz" 	/>
+    		<result property="clhgzbh" 		column="clhgzbh" 	/>
+    		<result property="cjhm" 		column="cjhm" 	/>
+    		<result property="fdjhm" 		column="fdjhm" 	/>
+    		<result property="clcp" 		column="clcp" 	/>
+    		<result property="clxh" 		column="clxh" 	/>
+    		<result property="cllx" 		column="cllx" 	/>
+    		<result property="zdjsjg" 		column="zdjsjg" 	/>
+    		<result property="cllb" 		column="cllb" 	/>
+    		<result property="dw" 		column="dw" 	/>
+    		<result property="zw" 		column="zw" 	/>
+    		<result property="pql" 		column="pql" 	/>
+    		<result property="rlzl" 		column="rlzl" 	/>
+    		<result property="scqymc" 		column="scqymc" 	/>
+    		<result property="cdsx" 		column="cdsx" 	/>
+    		<result property="zypz" 		column="zypz" 	/>
+    		<result property="clcpxh" 		column="clcpxh" 	/>
+    		<result property="clxlh" 		column="clxlh" 	/>
+    		<result property="fpdm" 		column="fpdm" 	/>
+    		<result property="fpjg" 		column="fpjg" 	/>
+    		<result property="fphm" 		column="fphm" 	/>
+    		<result property="kprq" 		column="kprq" 	/>
+    		<result property="xjrq" 		column="xjrq" 	/>
+    		<result property="bhsje" 		column="bhsje" 	/>
+    		<result property="jxsnsrsbh" 		column="jxsnsrsbh" 	/>
+    		<result property="sbzt" 		column="sbzt" 	/>
+    		<result property="sbztmc" 		column="sbztmc" 	/>
+    		<result property="sbuuid" 		column="sbuuid" 	/>
+    		<result property="wszmxxid" 		column="wszmxxid" 	/>
+    		<result property="yzpzxh" 		column="yzpzxh" 	/>
+    		<result property="fpjgzsbz" 		column="fpjgzsbz" 	/>
+    		<result property="sswszmid" 		column="sswszmid" 	/>
+    		<result property="jmzsbz" 		column="jmzsbz" 	/>
+    		<result property="openid" 		column="openid" 	/>
+    		<result property="spdid" 		column="spdid" 	/>
+    		<result property="qpfs" 		column="qpfs" 	/>
+    		<result property="yjxxid" 		column="yjxxid" 	/>
+    		<result property="createtime" 		column="createtime" 	/>
+    		<result property="tqyzm"		column="tqyzm" />
+    		<collection property="yzxx" ofType="YzxxVo">
+				<result property="id"			    column="yzxx.id"	/>		
+				<result property="zsuuid"       	column="yzxx.zsuuid"    />
+				<result property="yzpzxh"       	column="yzxx.yzpzxh"    />
+				<result property="yzpzmxxh"     	column="yzxx.yzpzmxxh"  />
+				<result property="glyzpzmxxh"   	column="yzxx.glyzpzmxxh"/>
+				<result property="yzpzzldm"     	column="yzxx.yzpzzldm"  />
+				<result property="zsdlfsdm"     	column="yzxx.zsdlfsdm"  />
+				<result property="nssbrq"       	column="yzxx.nssbrq"    />
+				<result property="yzfsrq"       	column="yzxx.yzfsrq"    />
+				<result property="yzgsrq"       	column="yzxx.yzgsrq"    />
+				<result property="sl1"          	column="yzxx.sl1"    />   
+				<result property="ynse"         	column="yzxx.ynse"    />  
+				<result property="jmse"         	column="yzxx.jmse"   />   
+				<result property="yjse"         	column="yzxx.yjse" />     
+				<result property="ybtse"        	column="yzxx.ybtse" />    
+				<result property="znjje"        	column="yzxx.znjje"  />   
+				<result property="fkje"         	column="yzxx.fkje"  />    
+				<result property="lxje"         	column="yzxx.lxje"   />   
+				<result property="zsxmdm"       	column="yzxx.zsxmdm" />   
+				<result property="zspmdm"       	column="yzxx.zspmdm" />   
+				<result property="skssqq"       	column="yzxx.skssqq" />   
+				<result property="skssqz"       	column="yzxx.skssqz"  />  
+				<result property="skssswjgdm"   	column="yzxx.skssswjgdm"/>
+				<result property="zgswskfjdm"   	column="yzxx.zgswskfjdm"/>
+				<result property="zsswjgdm"     	column="yzxx.zsswjgdm"  />
+				<result property="bz"           	column="yzxx.bz"      />  
+				<result property="cjhm"         	column="yzxx.cjhm"  />    
+				<result property="dzsphm"       	column="yzxx.dzsphm"  />  
+				<result property="spuuid"       	column="yzxx.spuuid"  />  
+				<result property="djxh"         	column="yzxx.djxh"     /> 
+				<result property="openid"       	column="yzxx.openid"  />  
+    		</collection>
+    </resultMap>
+	
+</mapper>

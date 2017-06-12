@@ -1,0 +1,58 @@
+package org.aisino.cgswxj.jwt;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Map;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.aisino.cgswxj.common.CONTANTS;
+import org.aisino.cgswxj.utils.Utils;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+/**
+ * JWT 过滤器
+ * @author hexing
+ */
+//@Component
+public class JwtFilter extends OncePerRequestFilter {
+
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)throws ServletException, IOException {
+		String reqPath = request.getServletPath();
+		if(reqPath.equals(JwtUtils.JWT_REQPATH) || reqPath.equals(JwtUtils.JWT_JYPATH)){//如果是登录，则不要求token
+			filterChain.doFilter(request, response);
+		}else{
+			String token = request.getHeader(JwtUtils.JWT_TOKEN);
+			if(token==null){
+				token = request.getParameter(JwtUtils.JWT_TOKEN);
+			}
+			Map<String,Object>  map = null;
+			if(token==null){
+				map = Utils.createRetMap(CONTANTS.RETURN_ILLEGAL, "Token不能为空！");
+			}else{
+				try {
+					JwtUtils.checkJwt(token);
+					filterChain.doFilter(request, response);
+				} catch (Exception e) {
+					map = Utils.createRetMap(CONTANTS.RETURN_ILLEGAL, e.getMessage());
+				}
+		  }
+		  if(map !=null){
+			  response.setCharacterEncoding("UTF-8");    
+			  response.setContentType("application/json; charset=utf-8");
+			  ObjectMapper om = new ObjectMapper();
+			  Writer out = response.getWriter();
+			  om.writeValue(out,map);
+			  out.close();
+		  }
+		}
+	}
+
+}

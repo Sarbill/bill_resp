@@ -1,0 +1,422 @@
+package org.aisino.cgswxj.vo;
+
+import java.util.List;
+
+/**
+*@description:申报信息对象
+*@author zh
+*@date 2017-3-9-上午11:14:39
+*/
+
+public class SbxxVo {
+    public String id;
+    public String djxh;
+    public String nsrsbh;
+    public String nsrmc;
+    public String nsrsfzjzl;
+    public String nsrsfzjhm;
+    public String nsrlxdh;
+    public String gbhy;
+    public String hymx;
+    public String djzclx;
+    public String nsrlxdz;
+    public String clhgzbh;
+    public String cjhm;
+    public String fdjhm;
+    public String clcp;
+    public String clxh;
+    public String cllx;
+    public double zdjsjg;
+    public String cllb;
+    public double dw;
+    public long zw;
+    public double pql;
+    public String rlzl;
+    public String scqymc;
+    public String cdsx;
+    public String zypz;
+    public String clcpxh;
+    public String clxlh;
+    public String fpdm;
+    public String fphm;
+    public double fpjg;
+    public String kprq;
+    public String xjrq;
+    public double bhsje;
+    public String jxsnsrsbh;
+    //申报状态:0-扫描插入数据库 默认
+    //       1-申报保存
+    //       2-待缴款
+    //       3-已缴款
+    //       4-税收完税证明打印
+    //       5-完成
+    //       6-邮寄
+    public String sbzt;
+    public String sbztmc;
+    public String sbuuid;
+    public String wszmxxid;
+    public String yzpzxh;
+    public String fpjgzsbz;
+    public String sswszmid;
+    public String jmzsbz;
+    public String openid;
+    public String spdid;
+    public String qpfs;
+    public String createtime;
+    public String yjxxid;
+    public String tqyzm;//提取验证码
+    public String zdid;//领取票证的终端id
+    //应征信息
+    public List<YzxxVo>   yzxx;
+    
+    //为了前台显示2位小数
+    public String bhsje_str;
+    public String fpjg_str;
+    
+    //参数
+    public String sbxxid;
+    public String starttime;
+    public String endtime;
+    
+    
+    
+    
+    
+    public String getSbxxid() {
+		return sbxxid;
+	}
+	public void setSbxxid(String sbxxid) {
+		this.sbxxid = sbxxid;
+	}
+	public String getCreatetime() {
+		return createtime;
+	}
+	public void setCreatetime(String createtime) {
+		this.createtime = createtime;
+	}
+	public String getStarttime() {
+		return starttime;
+	}
+	public void setStarttime(String starttime) {
+		this.starttime = starttime;
+	}
+	public String getEndtime() {
+		return endtime;
+	}
+	public void setEndtime(String endtime) {
+		this.endtime = endtime;
+	}
+	public String getBhsje_str() {
+		return bhsje_str;
+	}
+	public void setBhsje_str(String bhsje_str) {
+		this.bhsje_str = bhsje_str;
+	}
+	public String getFpjg_str() {
+		return fpjg_str;
+	}
+	public void setFpjg_str(String fpjg_str) {
+		this.fpjg_str = fpjg_str;
+	}
+	public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getDjxh() {
+        return djxh;
+    }
+    public void setDjxh(String djxh) {
+        this.djxh = djxh;
+    }
+    public String getNsrsbh() {
+        return nsrsbh;
+    }
+    public void setNsrsbh(String nsrsbh) {
+        this.nsrsbh = nsrsbh;
+    }
+    public String getNsrmc() {
+        return nsrmc;
+    }
+    public void setNsrmc(String nsrmc) {
+        this.nsrmc = nsrmc;
+    }
+    public String getNsrsfzjzl() {
+        return nsrsfzjzl;
+    }
+    public void setNsrsfzjzl(String nsrsfzjzl) {
+        this.nsrsfzjzl = nsrsfzjzl;
+    }
+    public String getNsrsfzjhm() {
+        return nsrsfzjhm;
+    }
+    public void setNsrsfzjhm(String nsrsfzjhm) {
+        this.nsrsfzjhm = nsrsfzjhm;
+    }
+    public String getNsrlxdh() {
+        return nsrlxdh;
+    }
+    public void setNsrlxdh(String nsrlxdh) {
+        this.nsrlxdh = nsrlxdh;
+    }
+    public String getGbhy() {
+        return gbhy;
+    }
+    public void setGbhy(String gbhy) {
+        this.gbhy = gbhy;
+    }
+    public String getHymx() {
+        return hymx;
+    }
+    public void setHymx(String hymx) {
+        this.hymx = hymx;
+    }
+    public String getDjzclx() {
+        return djzclx;
+    }
+    public void setDjzclx(String djzclx) {
+        this.djzclx = djzclx;
+    }
+    public String getNsrlxdz() {
+        return nsrlxdz;
+    }
+    public void setNsrlxdz(String nsrlxdz) {
+        this.nsrlxdz = nsrlxdz;
+    }
+    public String getClhgzbh() {
+        return clhgzbh;
+    }
+    public void setClhgzbh(String clhgzbh) {
+        this.clhgzbh = clhgzbh;
+    }
+    public String getCjhm() {
+        return cjhm;
+    }
+    public void setCjhm(String cjhm) {
+        this.cjhm = cjhm;
+    }
+    public String getFdjhm() {
+        return fdjhm;
+    }
+    public void setFdjhm(String fdjhm) {
+        this.fdjhm = fdjhm;
+    }
+    public String getClcp() {
+        return clcp;
+    }
+    public void setClcp(String clcp) {
+        this.clcp = clcp;
+    }
+    public String getClxh() {
+        return clxh;
+    }
+    public void setClxh(String clxh) {
+        this.clxh = clxh;
+    }
+    public String getCllb() {
+        return cllb;
+    }
+    public void setCllb(String cllb) {
+        this.cllb = cllb;
+    }
+    public double getDw() {
+        return dw;
+    }
+    public void setDw(double dw) {
+        this.dw = dw;
+    }
+    public long getZw() {
+        return zw;
+    }
+    public void setZw(long zw) {
+        this.zw = zw;
+    }
+    public double getPql() {
+        return pql;
+    }
+    public void setPql(double pql) {
+        this.pql = pql;
+    }
+    public String getRlzl() {
+        return rlzl;
+    }
+    public void setRlzl(String rlzl) {
+        this.rlzl = rlzl;
+    }
+    public String getScqymc() {
+        return scqymc;
+    }
+    public void setScqymc(String scqymc) {
+        this.scqymc = scqymc;
+    }
+    
+    public String getCdsx() {
+		return cdsx;
+	}
+	public void setCdsx(String cdsx) {
+		this.cdsx = cdsx;
+	}
+	public String getZypz() {
+        return zypz;
+    }
+    public void setZypz(String zypz) {
+        this.zypz = zypz;
+    }
+    public String getClcpxh() {
+        return clcpxh;
+    }
+    public void setClcpxh(String clcpxh) {
+        this.clcpxh = clcpxh;
+    }
+    public String getClxlh() {
+        return clxlh;
+    }
+    public void setClxlh(String clxlh) {
+        this.clxlh = clxlh;
+    }
+    public String getFpdm() {
+        return fpdm;
+    }
+    public void setFpdm(String fpdm) {
+        this.fpdm = fpdm;
+    }
+    public String getFphm() {
+        return fphm;
+    }
+    public void setFphm(String fphm) {
+        this.fphm = fphm;
+    }
+    public double getFpjg() {
+        return fpjg;
+    }
+    public void setFpjg(double fpjg) {
+        this.fpjg = fpjg;
+    }
+    public String getKprq() {
+        return kprq;
+    }
+    public void setKprq(String kprq) {
+        this.kprq = kprq;
+    }
+    public String getXjrq() {
+        return xjrq;
+    }
+    public void setXjrq(String xjrq) {
+        this.xjrq = xjrq;
+    }
+    public double getBhsje() {
+        return bhsje;
+    }
+    public void setBhsje(double bhsje) {
+        this.bhsje = bhsje;
+    }
+    public String getJxsnsrsbh() {
+        return jxsnsrsbh;
+    }
+    public void setJxsnsrsbh(String jxsnsrsbh) {
+        this.jxsnsrsbh = jxsnsrsbh;
+    }
+    public String getSbzt() {
+        return sbzt;
+    }
+    public void setSbzt(String sbzt) {
+        this.sbzt = sbzt;
+    }
+    public String getSbuuid() {
+        return sbuuid;
+    }
+    public void setSbuuid(String sbuuid) {
+        this.sbuuid = sbuuid;
+    }
+    public String getWszmxxid() {
+        return wszmxxid;
+    }
+    public void setWszmxxid(String wszmxxid) {
+        this.wszmxxid = wszmxxid;
+    }
+    public String getYzpzxh() {
+        return yzpzxh;
+    }
+    public void setYzpzxh(String yzpzxh) {
+        this.yzpzxh = yzpzxh;
+    }
+    public String getFpjgzsbz() {
+        return fpjgzsbz;
+    }
+    public void setFpjgzsbz(String fpjgzsbz) {
+        this.fpjgzsbz = fpjgzsbz;
+    }
+    public String getSswszmid() {
+        return sswszmid;
+    }
+    public void setSswszmid(String sswszmid) {
+        this.sswszmid = sswszmid;
+    }
+    public String getJmzsbz() {
+        return jmzsbz;
+    }
+    public void setJmzsbz(String jmzsbz) {
+        this.jmzsbz = jmzsbz;
+    }
+    public String getOpenid() {
+        return openid;
+    }
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+    public String getSpdid() {
+        return spdid;
+    }
+    public void setSpdid(String spdid) {
+        this.spdid = spdid;
+    }
+    public String getQpfs() {
+        return qpfs;
+    }
+    public void setQpfs(String qpfs) {
+        this.qpfs = qpfs;
+    }
+    public String getYjxxid() {
+        return yjxxid;
+    }
+    public void setYjxxid(String yjxxid) {
+        this.yjxxid = yjxxid;
+    }
+	public String getCllx() {
+		return cllx;
+	}
+	public void setCllx(String cllx) {
+		this.cllx = cllx;
+	}
+	
+	public double getZdjsjg() {
+		return zdjsjg;
+	}
+	public void setZdjsjg(double zdjsjg) {
+		this.zdjsjg = zdjsjg;
+	}
+	public List<YzxxVo> getYzxx() {
+		return yzxx;
+	}
+	public void setYzxx(List<YzxxVo> yzxx) {
+		this.yzxx = yzxx;
+	}
+	public String getSbztmc() {
+		return sbztmc;
+	}
+	public void setSbztmc(String sbztmc) {
+		this.sbztmc = sbztmc;
+	}
+	public String getTqyzm() {
+		return tqyzm;
+	}
+	public void setTqyzm(String tqyzm) {
+		this.tqyzm = tqyzm;
+	}
+	
+    
+    
+    
+
+}

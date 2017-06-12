@@ -1,0 +1,84 @@
+2017-05-02 08:47:04 ContextLoader.java INFO Root WebApplicationContext: initialization started
+2017-05-02 08:47:05 AbstractApplicationContext.java INFO Refreshing Root WebApplicationContext: startup date [Tue May 02 08:47:05 CST 2017]; root of context hierarchy
+2017-05-02 08:47:05 XmlBeanDefinitionReader.java INFO Loading XML bean definitions from URL [file:/F:/git_repository/spring-redis/target/classes/conf/applicationContext.xml]
+2017-05-02 08:47:06 PropertiesLoaderSupport.java INFO Loading properties file from URL [file:/F:/git_repository/spring-redis/target/classes/conf/jdbc.properties]
+2017-05-02 08:47:06 PropertiesLoaderSupport.java INFO Loading properties file from class path resource [conf/redis.properties]
+2017-05-02 08:47:07 DruidDataSource.java INFO {dataSource-1} inited
+2017-05-02 08:47:08 AbstractHandlerMethodMapping.java INFO Mapped "{[/menu/queryCity.do]}" onto public java.util.Map<java.lang.String, java.lang.Object> org.redis.mj.controller.MenuController.queryCity(java.lang.String)
+2017-05-02 08:47:08 AbstractHandlerMethodMapping.java INFO Mapped "{[/menu/insertCity.do]}" onto public void org.redis.mj.controller.MenuController.insertCity(org.redis.mj.entity.City)
+2017-05-02 08:47:08 AbstractHandlerMethodMapping.java INFO Mapped "{[/menu/tohome]}" onto public java.lang.String org.redis.mj.controller.MenuController.toHome()
+2017-05-02 08:47:08 AbstractHandlerMethodMapping.java INFO Mapped "{[/menu/updateCity.do]}" onto public java.util.Map<java.lang.String, java.lang.Object> org.redis.mj.controller.MenuController.updateCity(java.lang.String)
+2017-05-02 08:47:09 RequestMappingHandlerAdapter.java INFO Looking for @ControllerAdvice: Root WebApplicationContext: startup date [Tue May 02 08:47:05 CST 2017]; root of context hierarchy
+2017-05-02 08:47:09 RequestMappingHandlerAdapter.java INFO Looking for @ControllerAdvice: Root WebApplicationContext: startup date [Tue May 02 08:47:05 CST 2017]; root of context hierarchy
+2017-05-02 08:47:10 AbstractUrlHandlerMapping.java INFO Mapped URL path [/img/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0'
+2017-05-02 08:47:10 ContextLoader.java INFO Root WebApplicationContext: initialization completed in 5841 ms
+2017-05-02 08:47:10 FrameworkServlet.java INFO FrameworkServlet 'dispatcher': initialization started
+2017-05-02 08:47:10 AbstractApplicationContext.java INFO Refreshing WebApplicationContext for namespace 'dispatcher-servlet': startup date [Tue May 02 08:47:10 CST 2017]; parent: Root WebApplicationContext
+2017-05-02 08:47:10 XmlBeanDefinitionReader.java INFO Loading XML bean definitions from URL [file:/F:/git_repository/spring-redis/target/classes/conf/applicationContext.xml]
+2017-05-02 08:47:11 PropertiesLoaderSupport.java INFO Loading properties file from URL [file:/F:/git_repository/spring-redis/target/classes/conf/jdbc.properties]
+2017-05-02 08:47:11 PropertiesLoaderSupport.java INFO Loading properties file from class path resource [conf/redis.properties]
+2017-05-02 08:47:11 DruidDataSource.java INFO {dataSource-2} inited
+2017-05-02 08:47:11 AbstractHandlerMethodMapping.java INFO Mapped "{[/menu/queryCity.do]}" onto public java.util.Map<java.lang.String, java.lang.Object> org.redis.mj.controller.MenuController.queryCity(java.lang.String)
+2017-05-02 08:47:11 AbstractHandlerMethodMapping.java INFO Mapped "{[/menu/insertCity.do]}" onto public void org.redis.mj.controller.MenuController.insertCity(org.redis.mj.entity.City)
+2017-05-02 08:47:11 AbstractHandlerMethodMapping.java INFO Mapped "{[/menu/tohome]}" onto public java.lang.String org.redis.mj.controller.MenuController.toHome()
+2017-05-02 08:47:11 AbstractHandlerMethodMapping.java INFO Mapped "{[/menu/updateCity.do]}" onto public java.util.Map<java.lang.String, java.lang.Object> org.redis.mj.controller.MenuController.updateCity(java.lang.String)
+2017-05-02 08:47:11 RequestMappingHandlerAdapter.java INFO Looking for @ControllerAdvice: WebApplicationContext for namespace 'dispatcher-servlet': startup date [Tue May 02 08:47:10 CST 2017]; parent: Root WebApplicationContext
+2017-05-02 08:47:11 RequestMappingHandlerAdapter.java INFO Looking for @ControllerAdvice: WebApplicationContext for namespace 'dispatcher-servlet': startup date [Tue May 02 08:47:10 CST 2017]; parent: Root WebApplicationContext
+2017-05-02 08:47:11 AbstractUrlHandlerMapping.java INFO Mapped URL path [/img/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0'
+2017-05-02 08:47:12 FrameworkServlet.java INFO FrameworkServlet 'dispatcher': initialization completed in 1257 ms
+2017-05-02 08:47:30 MenuController.java INFO controllerLog:class org.redis.mj.controller.MenuController
+2017-05-02 08:48:37 MenuController.java INFO controllerLog:class org.redis.mj.controller.MenuController
+2017-05-02 08:49:09 MenuController.java INFO controllerLog:class org.redis.mj.controller.MenuController
+2017-05-02 08:49:10 MenuService.java INFO --------武汉
+2017-05-02 08:50:05 MenuController.java INFO controllerLog:class org.redis.mj.controller.MenuController
+2017-05-02 08:50:18 MenuController.java INFO updatecity:class org.redis.mj.controller.MenuController
+2017-05-02 08:50:18 MenuService.java INFO update city:00801
+2017-05-02 08:51:04 MenuController.java INFO controllerLog:class org.redis.mj.controller.MenuController
+2017-05-02 08:51:05 MenuService.java INFO --------武汉
+2017-05-02 08:51:08 MenuController.java INFO controllerLog:class org.redis.mj.controller.MenuController
+2017-05-02 09:00:20 MenuController.java INFO updatecity:class org.redis.mj.controller.MenuController
+2017-05-02 09:00:20 MenuService.java INFO update city:00801
+2017-05-02 09:00:23 MenuController.java INFO controllerLog:class org.redis.mj.controller.MenuController
+2017-05-02 09:00:23 MenuService.java INFO --------武汉
+2017-05-02 09:00:26 MenuController.java INFO controllerLog:class org.redis.mj.controller.MenuController
+2017-05-02 09:00:27 MenuController.java INFO controllerLog:class org.redis.mj.controller.MenuController
+2017-05-02 09:00:28 MenuController.java INFO controllerLog:class org.redis.mj.controller.MenuController
+2017-05-02 09:00:45 MenuController.java INFO updatecity:class org.redis.mj.controller.MenuController
+2017-05-02 09:00:45 MenuService.java INFO update city:00801
+2017-05-02 09:00:50 MenuController.java INFO controllerLog:class org.redis.mj.controller.MenuController
+2017-05-02 09:00:50 MenuService.java INFO --------武汉
+2017-05-02 09:00:54 MenuController.java INFO controllerLog:class org.redis.mj.controller.MenuController
+2017-05-02 11:39:43 ContextLoader.java INFO Root WebApplicationContext: initialization started
+2017-05-02 11:39:43 AbstractApplicationContext.java INFO Refreshing Root WebApplicationContext: startup date [Tue May 02 11:39:43 CST 2017]; root of context hierarchy
+2017-05-02 11:39:44 XmlBeanDefinitionReader.java INFO Loading XML bean definitions from URL [file:/F:/git_repository/spring-redis/target/classes/conf/applicationContext.xml]
+2017-05-02 11:39:44 PropertiesLoaderSupport.java INFO Loading properties file from URL [file:/F:/git_repository/spring-redis/target/classes/conf/jdbc.properties]
+2017-05-02 11:39:44 PropertiesLoaderSupport.java INFO Loading properties file from class path resource [conf/redis.properties]
+2017-05-02 11:39:46 DruidDataSource.java INFO {dataSource-1} inited
+2017-05-02 11:39:47 AbstractHandlerMethodMapping.java INFO Mapped "{[/menu/queryCity.do]}" onto public java.util.Map<java.lang.String, java.lang.Object> org.redis.mj.controller.MenuController.queryCity(java.lang.String)
+2017-05-02 11:39:47 AbstractHandlerMethodMapping.java INFO Mapped "{[/menu/insertCity.do]}" onto public void org.redis.mj.controller.MenuController.insertCity(org.redis.mj.entity.City)
+2017-05-02 11:39:47 AbstractHandlerMethodMapping.java INFO Mapped "{[/menu/tohome]}" onto public java.lang.String org.redis.mj.controller.MenuController.toHome()
+2017-05-02 11:39:47 AbstractHandlerMethodMapping.java INFO Mapped "{[/menu/updateCity.do]}" onto public java.util.Map<java.lang.String, java.lang.Object> org.redis.mj.controller.MenuController.updateCity(java.lang.String)
+2017-05-02 11:39:48 RequestMappingHandlerAdapter.java INFO Looking for @ControllerAdvice: Root WebApplicationContext: startup date [Tue May 02 11:39:43 CST 2017]; root of context hierarchy
+2017-05-02 11:39:48 RequestMappingHandlerAdapter.java INFO Looking for @ControllerAdvice: Root WebApplicationContext: startup date [Tue May 02 11:39:43 CST 2017]; root of context hierarchy
+2017-05-02 11:39:48 AbstractUrlHandlerMapping.java INFO Mapped URL path [/img/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0'
+2017-05-02 11:39:49 ContextLoader.java INFO Root WebApplicationContext: initialization completed in 5289 ms
+2017-05-02 11:39:49 FrameworkServlet.java INFO FrameworkServlet 'dispatcher': initialization started
+2017-05-02 11:39:49 AbstractApplicationContext.java INFO Refreshing WebApplicationContext for namespace 'dispatcher-servlet': startup date [Tue May 02 11:39:49 CST 2017]; parent: Root WebApplicationContext
+2017-05-02 11:39:49 XmlBeanDefinitionReader.java INFO Loading XML bean definitions from URL [file:/F:/git_repository/spring-redis/target/classes/conf/applicationContext.xml]
+2017-05-02 11:39:49 PropertiesLoaderSupport.java INFO Loading properties file from URL [file:/F:/git_repository/spring-redis/target/classes/conf/jdbc.properties]
+2017-05-02 11:39:49 PropertiesLoaderSupport.java INFO Loading properties file from class path resource [conf/redis.properties]
+2017-05-02 11:39:49 DruidDataSource.java INFO {dataSource-2} inited
+2017-05-02 11:39:49 AbstractHandlerMethodMapping.java INFO Mapped "{[/menu/queryCity.do]}" onto public java.util.Map<java.lang.String, java.lang.Object> org.redis.mj.controller.MenuController.queryCity(java.lang.String)
+2017-05-02 11:39:49 AbstractHandlerMethodMapping.java INFO Mapped "{[/menu/insertCity.do]}" onto public void org.redis.mj.controller.MenuController.insertCity(org.redis.mj.entity.City)
+2017-05-02 11:39:49 AbstractHandlerMethodMapping.java INFO Mapped "{[/menu/tohome]}" onto public java.lang.String org.redis.mj.controller.MenuController.toHome()
+2017-05-02 11:39:49 AbstractHandlerMethodMapping.java INFO Mapped "{[/menu/updateCity.do]}" onto public java.util.Map<java.lang.String, java.lang.Object> org.redis.mj.controller.MenuController.updateCity(java.lang.String)
+2017-05-02 11:39:49 RequestMappingHandlerAdapter.java INFO Looking for @ControllerAdvice: WebApplicationContext for namespace 'dispatcher-servlet': startup date [Tue May 02 11:39:49 CST 2017]; parent: Root WebApplicationContext
+2017-05-02 11:39:49 RequestMappingHandlerAdapter.java INFO Looking for @ControllerAdvice: WebApplicationContext for namespace 'dispatcher-servlet': startup date [Tue May 02 11:39:49 CST 2017]; parent: Root WebApplicationContext
+2017-05-02 11:39:49 AbstractUrlHandlerMapping.java INFO Mapped URL path [/img/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0'
+2017-05-02 11:39:50 FrameworkServlet.java INFO FrameworkServlet 'dispatcher': initialization completed in 991 ms
+2017-05-02 11:39:57 MenuController.java INFO controllerLog:class org.redis.mj.controller.MenuController
+2017-05-02 11:46:02 MenuController.java INFO controllerLog:class org.redis.mj.controller.MenuController
+2017-05-02 11:46:05 MenuController.java INFO updatecity:class org.redis.mj.controller.MenuController
+2017-05-02 11:46:05 MenuService.java INFO update city:00801
+2017-05-02 11:46:10 MenuController.java INFO controllerLog:class org.redis.mj.controller.MenuController
+2017-05-02 11:46:10 MenuService.java INFO --------武汉

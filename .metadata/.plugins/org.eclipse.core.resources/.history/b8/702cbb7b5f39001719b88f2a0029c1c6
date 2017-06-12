@@ -1,0 +1,302 @@
+package org.aisino.fp.service.impl;
+
+import com.alibaba.druid.util.Base64;
+import com.alibaba.dubbo.config.annotation.Service;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
+import org.aisino.common.Config;
+import org.aisino.common.Constants;
+import org.aisino.fp.dao.FpypDao;
+import org.aisino.jdcwlfp.iservice.fp.service.IFpypService;
+import org.aisino.jdcwlfp.iservice.fp.vo.TaFpVo;
+import org.aisino.service.ServiceException;
+import org.aisino.util.HttpConnectionUtil;
+import org.aisino.util.TokenUtil;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+@Service(version = Constants.HXT_DUBBO_PROVIDER_VERSION, group = Constants.HXT_DUBBO_PROVIDER_GROUP,interfaceClass = IFpypService.class)
+public class FpypServiceImpl implements IFpypService{
+	
+	@Autowired
+	private FpypDao fpypDao;
+
+	@Override
+	public Map<String, Object> queryPage(TaFpVo vo) {
+		// TODO Auto-generated method stub
+		Map<String,Object> map = new HashMap<String, Object>();
+	
+		boolean retVal = false;
+		String msg = "";
+		 try {
+			List<TaFpVo> list = fpypDao.queryPage(vo);
+			int rowCount = fpypDao.queryCount(vo);			
+			
+			map.put(DATA, list);
+			map.put(ROW_COUNT, rowCount);
+			retVal = true;
+			msg = "获取验票列表成功!";
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			throw new ServiceException("获取验票列表失败!");
+		}
+		map.put(MSG, msg);
+		map.put(SUCCESS,retVal);
+		
+		return map;
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public Map<String, Object> ypzc(TaFpVo vo) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		boolean retVal = false;
+		String msg = "";
+		
+		try {
+			fpypDao.updateTempZc(vo);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			throw new ServiceException("验票异常!");
+		}
+		
+		try {
+			fpypDao.updateZc(vo);
+			msg ="验票成功!";
+			retVal = true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			throw new ServiceException("验票异常!");
+		}
+		map.put(MSG, msg);
+		map.put(SUCCESS,retVal);
+		return map;
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public Map<String, Object> ypsb(TaFpVo vo) {
+		// TODO Auto-generated method stub
+	Map<String,Object> map = new HashMap<String, Object>();
+		
+		boolean retVal = false;
+		String msg = "";
+		
+		try {
+			fpypDao.updateTempYc(vo);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			throw new ServiceException("验票异常!");
+		}
+		
+		try {
+			fpypDao.updateYc(vo);
+			msg ="验票成功!";
+			retVal = true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			throw new ServiceException("验票异常!");
+		}
+		map.put(MSG, msg);
+		map.put(SUCCESS,retVal);
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> queryPo(TaFpVo vo) {
+		// TODO Auto-generated method stub
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		boolean retVal = false;
+		String msg = "";
+		 try {
+			 	
+			 vo = fpypDao.queryPoByKpxh(vo);
+			map.put(DATA, vo);
+			retVal = true;
+			msg = "获取验票信息成功!";
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			throw new ServiceException("获取验票信息异常!");
+		}
+		map.put(MSG, msg);
+		map.put(SUCCESS,retVal);
+		
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> querySeq() {
+		// TODO Auto-generated method stub
+		
+       Map<String,Object> map = new HashMap<String, Object>();
+		
+		boolean retVal = false;
+		String msg = "";
+		 try {
+			 int value = fpypDao.querySeq();
+			map.put(DATA, value);
+			retVal = true;
+			msg = "获取信息成功!";
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			throw new ServiceException("获取数据异常!");
+		}
+		map.put(MSG, msg);
+		map.put(SUCCESS,retVal);
+		
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> querySwjgCount(String swjgdm) {
+		// TODO Auto-generated method stub
+       Map<String,Object> map = new HashMap<String, Object>();
+		
+		boolean retVal = false;
+		String msg = "";
+		 try {
+			 int value = fpypDao.queryCountBySwjgDm(swjgdm);
+			map.put(DATA, value);
+			retVal = true;
+			msg = "获取信息成功!";
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			throw new ServiceException("获取数据异常!");
+		}
+		map.put(MSG, msg);
+		map.put(SUCCESS,retVal);
+		
+		return map;
+	}
+	
+	
+	/**
+	 * Title:打印申报表时查询
+	 * Description:
+	 **/
+	@Override
+	public Map<String, Object> queryPrintTempVo(TaFpVo vo) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		try {
+			logger.info("-------------kpxxxh:"+vo.getKpxxxh());
+			//判断电子合格证是否存在
+			Map<String,String> resmap=checkDzhgzxxISExist(vo);
+			logger.info("-------------resCode:"+resmap.get("resCode"));
+			if(resmap.get("resCode").equals("1")&&"Y".equals(resmap.get("resData"))){
+				vo = fpypDao.queryPrintTempVo(vo);
+				//存在电子合格证，判断是否是备案经销商
+				if(null!=vo.getJxsnsrsbh()&&!vo.getJxsnsrsbh().equals("")){
+					int cnt=fpypDao.queryBajxsCount(vo.getJxsnsrsbh());
+					if(cnt>0){
+						logger.info("-------------cnt:1");
+						//备案经销商，判断是否属于个人身份证购车
+						if("10".equals(vo.getGcrzjlxdm())){
+							//获取加密二维码
+							
+							//组装json入参
+							StringBuilder sb=new StringBuilder("");
+							//0
+							sb.append(vo.getKpxxxh());
+							
+							Map<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();  
+					        hints.put(EncodeHintType.CHARACTER_SET, "utf-8"); 
+					        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
+					        hints.put(EncodeHintType.MARGIN, 0);
+					        BitMatrix bitMatrix = new MultiFormatWriter().encode(sb.toString(),BarcodeFormat.QR_CODE, 150, 150, hints);
+					        ByteArrayOutputStream bos=new ByteArrayOutputStream();
+					      
+					        MatrixToImageWriter.writeToStream(bitMatrix, "jpg", bos); 
+					        byte[] b=bos.toByteArray();
+					        String base64=Base64.byteArrayToBase64(b);
+					        map.put("pic", base64);
+						}
+					}	
+				}
+				
+				map.put(DATA, vo);
+				map.put(SUCCESS, true);
+				
+			}else{
+				map.put(SUCCESS, false);
+				map.put(MSG, resmap.get("resMsg"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServiceException("获取发票详细信息失败!");
+		}
+		
+		return map;
+	}
+	
+	
+	/**
+	 * Title:检查电子合格证是否存在
+	 * Description:调用金三接口判断电子合格证信息是否存在，若存在，可以打印申报表，否则提示不能打印
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
+	 **/
+	@Override
+	public Map<String,String> checkDzhgzxxISExist(TaFpVo vo) throws Exception {
+		Map<String,String> map=new HashMap<String,String>();
+		//获取合格证编号
+		TaFpVo po=fpypDao.queryPoByKpxh(vo);
+		if(null!=po){
+			//判断产地属性
+			String jkzmsh=po.getCljkzmsh();
+			String cdsx="";
+			String hgzbh="";
+			String cjhm=po.getClsbdm();
+			if(null==jkzmsh||"".equals(jkzmsh)||"-".equals(jkzmsh)||"--".equals(jkzmsh)||"---".equals(jkzmsh)||jkzmsh.length()<5){
+				cdsx="1";//国产车
+				hgzbh=po.getClhgzbh();
+			}else{
+				cdsx="2";//进口车
+				hgzbh=po.getClsbdm();
+			}
+			
+			//组装入参
+			Map<String,String> param=new HashMap<String,String>();
+			param.put("cdsx", cdsx);
+			param.put("cjhm", cjhm);
+			param.put("hgzbh", hgzbh);
+			//设置token
+			TokenUtil.GetToken();
+			String requrl=Config.wxurl+"/jdc/getDzhgzxx";
+			String result=HttpConnectionUtil.sendPost(requrl, param);
+			
+			ObjectMapper mapper=new ObjectMapper();
+			map=mapper.readValue(result, Map.class);
+			if(null!=po.getCllx()&&po.getCllx().indexOf("摩托")>=0){
+				logger.info("摩托车电子合格证信息检验电子合格证是否存在："+map.get("resData"));
+				map.put("resCode", "1");
+				map.put("resData", "Y");
+			}
+		}
+		
+		return map;
+	}
+
+}

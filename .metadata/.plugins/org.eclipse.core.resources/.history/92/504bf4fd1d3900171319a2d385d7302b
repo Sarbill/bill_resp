@@ -1,0 +1,404 @@
+package org.aisino.cgswxj.service.impl;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.aisino.DataExchange.JssqEnum;
+import org.aisino.DataExchange.JssqService;
+import org.aisino.cgs.business.protocol.BSPZ00039Request;
+import org.aisino.cgs.business.protocol.BSPZ00039Response;
+import org.aisino.cgs.business.protocol.BSPZ00039Response.KcxxGrid;
+import org.aisino.cgs.business.protocol.DzjkqkGridlbVO;
+import org.aisino.cgs.business.protocol.HXZGSB00087Request;
+import org.aisino.cgs.business.protocol.HXZGSB00087Response;
+import org.aisino.cgs.business.protocol.HXZGSB00088Request;
+import org.aisino.cgs.business.protocol.HXZGSB00088Response;
+import org.aisino.cgs.business.protocol.HXZGZS00330RequestVO;
+import org.aisino.cgs.business.protocol.HXZGZS00330ResponseVO;
+import org.aisino.cgs.business.protocol.HXZGZS00331RequestVO;
+import org.aisino.cgs.business.protocol.SBCgsWszmJHVO;
+import org.aisino.cgs.business.protocol.SBCgsWszmPzxxVO;
+import org.aisino.cgs.business.protocol.HXZGZS00331RequestVO.HkpzqkGrid;
+import org.aisino.cgs.business.protocol.HXZGZS00331RequestVO.ZsWszhkVO;
+import org.aisino.cgs.business.protocol.HXZGZS00331ResponseVO;
+import org.aisino.cgs.business.protocol.HkpzqkGridlbVO;
+import org.aisino.cgs.business.protocol.PZJcVO;
+import org.aisino.cgswxj.common.CONTANTS;
+import org.aisino.cgswxj.common.GenerateUUID;
+import org.aisino.cgswxj.dao.JDCFpxxDao;
+import org.aisino.cgswxj.dao.SbxxDao;
+import org.aisino.cgswxj.dao.SswszmDao;
+import org.aisino.cgswxj.dao.WszmDao;
+import org.aisino.cgswxj.dao.YzxxDao;
+import org.aisino.cgswxj.service.IZdService;
+import org.aisino.cgswxj.utils.Utils;
+import org.aisino.cgswxj.vo.SbxxVo;
+import org.aisino.cgswxj.vo.SswszmParamVo;
+import org.aisino.cgswxj.vo.SswszmVo;
+import org.aisino.cgswxj.vo.WszmParamVo;
+import org.aisino.cgswxj.vo.WszmVo;
+import org.aisino.cgswxj.vo.YzxxVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import utils.DateUtils;
+import utils.NumberToCN;
+import utils.NumberUtil;
+
+/**
+*@description:自助终端service层
+*@author zh
+*@date 2017-3-9-上午10:33:48
+*/
+@Service
+public class ZdServiceImpl implements IZdService {
+    static final Logger log = LoggerFactory.getLogger(ZdServiceImpl.class);
+    @Autowired
+    private JssqService jssqService;
+    @Autowired
+    SbxxDao sbxxDao;
+    @Autowired
+    SswszmDao sswszmDao;
+    @Autowired
+    YzxxDao yzxxDao;
+    @Autowired
+    WszmDao wszmDao;
+    @Autowired
+    JDCFpxxDao jdcFpxxDao;
+
+    @Override
+    public Map<String, Object> querySswszm(SswszmParamVo vo) {
+        //查询申报信息
+        SbxxVo sbxx= sbxxDao.querySbxx(vo.getSbxxid());
+        if(sbxx == null || sbxx.getCjhm()==null || sbxx.getFphm() ==null || sbxx.getNsrsbh()==null || sbxx.getYzpzxh()==null){
+            //resCode:0 成功 1失败 -1token过期或不合法 -2无此接口权限
+            return Utils.createRetMap(CONTANTS.RETURN_FAIL, "未查询到申报信息！");
+        }
+        
+        if(!"3".equals(sbxx.getSbzt())){//如果当前状态不为已缴税代开票状态，则直接返回错误
+            return Utils.createRetMap(CONTANTS.RETURN_FAIL, "当前状态不是待开票状态！");
+        }
+        
+        //查询税收完税证明库存
+        BSPZ00039Request bspz00039request = new BSPZ00039Request();
+        bspz00039request.setSwryDm(vo.getSwrydm());
+        bspz00039request.setPzzlDm(vo.getSswszmdm());
+        Map<String,Object> bspz00039res = jssqService.exchangeData(bspz00039request, "", "", vo.getSwrydm(), vo.getSwjgdm(), JssqEnum.HXZG_PZ_00039);
+        if(!(Boolean) bspz00039res.get("success")) return bspz00039res;
+        BSPZ00039Response bspz00039response = (BSPZ00039Response) bspz00039res.get("rows");
+        KcxxGrid grid = bspz00039response.getKcxxGrid();
+        if(grid==null) return Utils.createRetMap(CONTANTS.RETURN_FAIL, "未查询到税收完税证明库存！");
+        List<PZJcVO> splist = grid.getKcxxGridlb();
+        if(splist==null || splist.isEmpty()) return Utils.createRetMap(CONTANTS.RETURN_FAIL, "未查询到税收完税证明库存！");
+                
+        //查询未开过的电子缴费记录
+        HXZGZS00330RequestVO  hxzgzs00330request = new HXZGZS00330RequestVO();
+        hxzgzs00330request.setDjxh(sbxx.getDjxh());//登记序号
+        hxzgzs00330request.setPzzlDm(vo.getSswszmdm());//税收完税证明代码
+        hxzgzs00330request.setKjsjq(sbxx.getYzxx().get(0).getYzfsrq());//开具时间起
+        hxzgzs00330request.setKjsjz(sbxx.getYzxx().get(0).getYzfsrq());//开具时间止
+        hxzgzs00330request.setSwjgDm(sbxx.getYzxx().get(0).getSkssswjgdm());//这里设置税款所属税务机关代码
+        Map<String,Object>  hxzgzs00330res = jssqService.exchangeData(hxzgzs00330request, sbxx.getCjhm(), "", vo.getSwrydm(), vo.getSwjgdm(), JssqEnum.HXZG_ZS_10127);
+        if(!(Boolean) hxzgzs00330res.get("success")) return hxzgzs00330res;
+        HXZGZS00330ResponseVO  hxzgzs00330response = (HXZGZS00330ResponseVO) hxzgzs00330res.get("rows");
+        List<DzjkqkGridlbVO>   list =   hxzgzs00330response.getDzjkqkGrid().getDzjkqkGridlb();
+        //删除list 中zsxmDm 不为:10116(表示车购税)
+        Iterator<DzjkqkGridlbVO> it = list.iterator();
+        while(it.hasNext()){
+            if(!"10116".equals(it.next().getZsxmDm())){
+                it.remove();
+            }
+        }
+        SswszmVo ww = new SswszmVo();
+        ww.setId(GenerateUUID.getUUID());
+        ww.setOpenid(sbxx.getOpenid());
+        ww.setCjhm(sbxx.getCjhm());
+        ww.setTpr(vo.getSwrymc());//填票人
+        ww.setSwjgmc(vo.getSwjgmc());//税务机关名称
+        ww.setTfrq(DateUtils.getTodayStr());
+        ww.setTfrqn(DateUtils.getTodayNStr());
+        ww.setTfrqy(DateUtils.getTodayYStr());
+        ww.setTfrqr(DateUtils.getTodayRStr());
+        ww.setDzsphm(list.get(0).getDzsphm());
+        ww.setNsrmc(sbxx.getNsrmc());
+        ww.setNsrsbh(sbxx.getNsrsbh());
+        ww.setPmmc("车辆购置税");
+        ww.setSz("车辆购置税");
+        ww.setSjje(list.get(0).getSjje());
+        ww.setSjjestr(NumberUtil.formatDouble(list.get(0).getSjje()));//用于前台打印，保留两位小数
+        ww.setRkrq(list.get(0).getSkssqq());
+        ww.setPzhm(splist.get(0).getPzqshm());//税收完税证明号码
+        ww.setPzzgdm(splist.get(0).getPzzgDm());//字轨代码
+        ww.setSkssqq(list.get(0).getSkssqq());
+        ww.setSkssqz(list.get(0).getSkssqz());
+        //备注生成
+        StringBuilder bz = new StringBuilder();
+        
+        bz.append("("+splist.get(0).getPzzgDm()+")"+vo.getSswszmmc()+splist.get(0).getPzqshm()+"\n");
+        bz.append("发票代码:"+sbxx.getFpdm()+" 发票号码:"+sbxx.getFphm()+" 发票价格:"+NumberUtil.formatDouble(sbxx.getBhsje())+"\n");
+        bz.append("厂牌型号:"+sbxx.getClcpxh()==null?sbxx.getClcp():sbxx.getClcpxh()+"\n");
+        bz.append("车架号码:"+sbxx.getCjhm()+" 发动机号码:"+sbxx.getFdjhm()+"\n");
+        if(list.size()>1){//有滞纳金
+            ww.setSjje(ww.getSjje()+list.get(1).getSjje());
+            ww.setSjjestr(NumberUtil.formatDouble(ww.getSjje()));
+            double znj = list.get(0).getSjje()>list.get(1).getSjje()?list.get(1).getSjje():list.get(0).getSjje();
+            bz.append("滞纳金:"+NumberUtil.formatDouble(znj));
+        }
+        
+        ww.setBz(bz.toString());
+        ww.setJehjdx(NumberToCN.number2CNMontrayUnit(new BigDecimal(ww.getSjje())));//金额大写
+        sswszmDao.add(ww);//新增税收完税证明
+        sbxx.setSswszmid(ww.getId());
+        sbxxDao.updateSbxx(sbxx);//更新申报信息的 税收完税证明id
+        return Utils.createRetMap(CONTANTS.RETURN_SUCCESS, "处理成功！",ww);
+    }
+
+    @Override
+    public Map<String, Object> dySswszm(SswszmParamVo vo) {
+        //查询申报信息
+        SbxxVo sbxx= sbxxDao.querySbxx(vo.getSbxxid());
+        if(sbxx == null || sbxx.getCjhm()==null || sbxx.getFphm() ==null || sbxx.getNsrsbh()==null || sbxx.getYzpzxh()==null){
+            //resCode:0 成功 1失败 -1token过期或不合法 -2无此接口权限
+            return Utils.createRetMap(CONTANTS.RETURN_FAIL, "未查询到申报信息！");
+        }
+        
+        
+        if("4".equals(sbxx.getSbzt())){//从缓存获取数据
+            return  Utils.createRetMap(CONTANTS.RETURN_SUCCESS, "换开成功！");
+        }
+    
+        //更新完税证明换开记录
+        HXZGZS00331RequestVO  hxzgzs00331request = new HXZGZS00331RequestVO();
+        ZsWszhkVO       zsvo = new ZsWszhkVO();
+        zsvo.setDjxh(sbxx.getDjxh());//登记序号
+        zsvo.setHkrq(DateUtils.getTodayStr());//换开日期
+        zsvo.setSjgsdq(vo.getSwjgdm());//数据归属地区
+        zsvo.setSwjgDm(vo.getSwjgdm());//税务机关代码
+        zsvo.setCzryDm(vo.getSwrydm());//操作人员代码
+        hxzgzs00331request.setZsWszhkVO(zsvo);
+        HkpzqkGrid grid = new HkpzqkGrid();
+        List<HkpzqkGridlbVO> list = new ArrayList<HkpzqkGridlbVO>();
+        List<YzxxVo> yzxxList = yzxxDao.queryYzxx(sbxx.getYzpzxh());
+        SswszmVo sswszmVo = sswszmDao.querySswszm(sbxx.getSswszmid());
+        for(YzxxVo yzxx:yzxxList){
+            HkpzqkGridlbVO lbvo = new HkpzqkGridlbVO();
+            lbvo.setPzzlDm(vo.getSswszmdm());
+            lbvo.setPzzgDm(sswszmVo.getPzzgdm());
+            lbvo.setPzhm(sswszmVo.getPzhm());
+            lbvo.setSjje(yzxx.getYbtse());//实缴金额
+            lbvo.setJklxDm("73");
+            lbvo.setDzsphm(yzxx.getDzsphm());
+            lbvo.setSpuuid(yzxx.getSpuuid());
+            list.add(lbvo);
+        }
+        grid.setHkpzqkGridlb(list);
+        hxzgzs00331request.setHkpzqkGrid(grid);
+        Map<String,Object>   hxzgzs00331res= jssqService.exchangeData(hxzgzs00331request, sbxx.getCjhm(), "", vo.getSwrydm(), vo.getSwjgdm(), JssqEnum.HXZG_ZS_00331);
+        if(!(Boolean) hxzgzs00331res.get("success"))        return hxzgzs00331res;
+        HXZGZS00331ResponseVO       hxzgzs00331response =  (HXZGZS00331ResponseVO) hxzgzs00331res.get("rows");
+        String rtnCode = hxzgzs00331response.getRtncode();//返回值 Y或者N
+        if("N".equals(rtnCode)){//换开失败
+                log.error("打印税收完税证明失败！cjhm:{}", sbxx.getCjhm());
+                return      Utils.createRetMap(CONTANTS.RETURN_FAIL, "打印税收完税证明失败！");
+        }
+        sswszmVo.setDybz("1");//设为已打印
+        int  ssflag = sswszmDao.update(sswszmVo);
+        if(ssflag==0){
+            log.error("更新税收完税证明打印标志失败!  cjhm:{}  sbxxid:{} sswszmid:{}", sbxx.getCjhm(),sbxx.getId(),sswszmVo.getId());
+        }
+        sbxx.setSbzt("4");//更新申报状态为税票已打印
+        int sbflag = sbxxDao.updateSbxx(sbxx);
+        if(sbflag==0){
+            log.error("更新申报状态失败!  cjhm:{}  sbxxid:{} sswszmid:{}", sbxx.getCjhm(),sbxx.getId(),sswszmVo.getId());
+        }
+        return  Utils.createRetMap(CONTANTS.RETURN_SUCCESS, "换开成功！");
+    }
+
+    @Override
+    public Map<String, Object> queryWszm(WszmParamVo vo) {
+        //查询申报信息
+        SbxxVo sbxx= sbxxDao.querySbxx(vo.getSbxxid());
+        if(sbxx == null || sbxx.getCjhm()==null || sbxx.getFphm() ==null || sbxx.getNsrsbh()==null || sbxx.getYzpzxh()==null){
+            //resCode:0 成功 1失败 -1token过期或不合法 -2无此接口权限
+            return Utils.createRetMap(CONTANTS.RETURN_FAIL, "未查询到申报信息！");
+        }
+        
+        if(!"4".equals(sbxx.getSbzt()) && !"3".equals(sbxx.getSbzt()) ){//不是已开票待开完税证明状态
+            log.error("当前申报状态错误。cjhm:{} sbxxid:{}", sbxx.getCjhm(),sbxx.getId());
+            return Utils.createRetMap(CONTANTS.RETURN_FAIL, "当前状态不能开具完税证明！");
+        }
+        
+        //查询完税证明信息
+        HXZGSB00087Request  hxzgsb00087request = new HXZGSB00087Request();
+        hxzgsb00087request.setClsbdh(sbxx.getCjhm());
+        Map<String,Object> hxzgsb00087res = jssqService.exchangeData(hxzgsb00087request, sbxx.getCjhm(), "", vo.getSwrydm(), vo.getSwjgdm(), JssqEnum.HXZG_SB_00087);
+        if(!(Boolean) hxzgsb00087res.get("success")) return hxzgsb00087res;
+        HXZGSB00087Response hxzgsb00087response = (HXZGSB00087Response) hxzgsb00087res.get("rows");
+        String  reCode = hxzgsb00087response.getSBCgsWszmffResVO().getReCode();
+        if("0".equals(reCode)){
+                return Utils.createRetMap(CONTANTS.RETURN_FAIL, "该车已完税！");
+        }else if("2".equals(reCode)){
+                return Utils.createRetMap(CONTANTS.RETURN_FAIL, "该车已申报，待缴款！");
+        }else if("100".equals(reCode)){
+                return Utils.createRetMap(CONTANTS.RETURN_FAIL, "该车未申报！");
+        }else if("1".equals(reCode)){
+                SBCgsWszmJHVO  w =  hxzgsb00087response.getSBCgsWszmffResVO().getSbcgswszmvo();
+                WszmVo wszm = new WszmVo();
+                wszm.setId(GenerateUUID.getUUID());
+                wszm.setOpenid(sbxx.getOpenid());
+                wszm.setWszmhm(w.getWspzhm());
+                wszm.setNsrmc(w.getNsrmc());
+                wszm.setCpxh(hxzgsb00087response.getSBCgsWszmffResVO().getSbCgsSbbxblsbJHVO().getClcpxh());
+                wszm.setFdjhm(Utils.StringUtils(sbxx.getFdjhm()));
+                wszm.setCjhm(w.getClsbdh());
+                wszm.setJbr(w.getSwjgjbrmc());
+                wszm.setZsjgmc(w.getZsjgmc());
+                wszm.setZssj(w.getZstfrq());
+                wszmDao.add(wszm);
+                sbxx.setWszmxxid(wszm.getId());
+                sbxxDao.updateSbxx(sbxx);
+                return Utils.createRetMap(CONTANTS.RETURN_SUCCESS, "处理成功！",wszm);
+        }else{
+                return Utils.createRetMap(CONTANTS.RETURN_FAIL, "查询可换开的完税证明信息失败，未知的返回结果，请联系后台工作人员！");
+        }
+    }
+
+    @Override
+    public Map<String, Object> dyWszm(WszmParamVo vo) {
+        //查询申报信息
+        SbxxVo sbxx= sbxxDao.querySbxx(vo.getSbxxid());
+        if(sbxx == null || sbxx.getCjhm()==null || sbxx.getFphm() ==null || sbxx.getNsrsbh()==null || sbxx.getYzpzxh()==null){
+            //resCode:0 成功 1失败 -1token过期或不合法 -2无此接口权限
+            return Utils.createRetMap(CONTANTS.RETURN_FAIL, "未查询到申报信息！");
+        }
+        
+        WszmVo wszm = wszmDao.queryWszm(sbxx.getWszmxxid());
+        //保存完税证明信息
+        HXZGSB00088Request hxzgsb00088request = new HXZGSB00088Request();
+        hxzgsb00088request.setFlag("1");
+        SBCgsWszmJHVO jh = new SBCgsWszmJHVO();
+        jh.setCgssbuuid(sbxx.getSbuuid());
+        jh.setCgsuuid(sbxx.getSbuuid());
+        jh.setCldabh("");
+        jh.setCldauuid("");
+        jh.setClpzhm(wszm.getWszmhm());
+        jh.setClsbdh(sbxx.getCjhm());
+        jh.setDjxh(sbxx.getDjxh());
+        jh.setEwtmc("");
+        jh.setEwtmt("");
+        jh.setFfrq(DateUtils.getTodayStr());
+        jh.setMstfrq(DateUtils.getTodayStr());
+        jh.setNsrmc(sbxx.getNsrmc());
+        jh.setNsrsbh(sbxx.getNsrsbh());
+        jh.setPzhm(wszm.getWszmhm());
+        jh.setPzxh(sbxx.getYzpzxh());
+        jh.setPzzgDm("");
+        jh.setPzzlDm(vo.getWszmdm());
+        jh.setSwjgjbrDm(vo.getSwrydm());
+        jh.setSwjgjbrmc(vo.getSwrymc());
+        jh.setWspzhm(wszm.getWszmhm());
+        jh.setZmsbz("");
+        jh.setZsjgDm(vo.getSwjgdm());
+        jh.setZsjgmc(vo.getSwjgmc());//征收机关名称
+        jh.setZstfrq(DateUtils.getTodayStr());
+        hxzgsb00088request.setSbcgswszmvo(jh);
+        SBCgsWszmPzxxVO pz = new SBCgsWszmPzxxVO();
+        pz.setPzzlDm(vo.getWszmdm());
+        pz.setPzqshm(wszm.getWszmhm());
+        pz.setPzzzhm(wszm.getWszmhm());
+        hxzgsb00088request.setSbcgswszmpzxxvo(pz);
+        Map<String,Object>  hxzgsb00088res = jssqService.exchangeData(hxzgsb00088request, sbxx.getCjhm(), "", vo.getSwrydm(), vo.getSwjgdm(), JssqEnum.HXZG_SB_00088);
+        if(!(Boolean) hxzgsb00088res.get("success")) return hxzgsb00088res;
+        HXZGSB00088Response hxzgsb00088response = (HXZGSB00088Response) hxzgsb00088res.get("rows");
+        
+        wszm.setEwm(hxzgsb00088response.getSBCgsWszmffSaveResVO().getEwtmc());
+        wszm.setDybz("1");//更新完税证明为已打印
+        wszmDao.update(wszm);
+        sbxx.setWszmxxid(wszm.getId());
+        sbxx.setSbzt("5");//更新申报表状态为已完税
+        sbxx.setZdid(vo.getZdid());
+        sbxxDao.updateSbxx(sbxx);//更新申报表状态为已完税
+        
+        //金三返回的档案编号,之后会用
+        //String dmbh = hxzgsb00088response.getSBCgsWszmffSaveResVO().getCldabh();
+        
+        if("鄂国证".equals(vo.getWszmmc())){//湖北需要验票
+            try{
+                String  kpxxxh = jdcFpxxDao.queryKpxxxh(sbxx.getCjhm());
+                if(kpxxxh !=null){
+                    Map<String,Object> map = new HashMap<String, Object>();
+                    map.put("shrydm", vo.getSwrydm());
+                    map.put("cgsswjgdm", vo.getSwjgdm());
+                    map.put("kpxxxh", kpxxxh);
+                    jdcFpxxDao.updateTempZc(map);//更新临时表
+                    jdcFpxxDao.updateZc(map);//更新正式表
+                    
+                    int  count = jdcFpxxDao.queryCount(sbxx.getCjhm());
+                    if(count>0){
+                        jdcFpxxDao.removeFpZzzd(sbxx.getCjhm());//如果已存在，先删掉之前的数据
+                    }
+                    jdcFpxxDao.insertFpZzzd(sbxx.getCjhm());//插入TA_FP_ZZZD表，用于机动车报表
+                }else{
+                    log.error("未查询到待验票的发票信息，车架号："+sbxx.getCjhm());
+                }
+            }catch(Exception ex){
+                log.error("验票异常！车架号："+sbxx.getCjhm(), ex);
+            }
+        }
+        return Utils.createRetMap(CONTANTS.RETURN_SUCCESS, "处理成功！", wszm);
+    }
+
+    @Override
+    public Map<String, Object> querysbxx(String sbxxid) {
+    	SbxxVo sbxxVo = new SbxxVo();
+    	sbxxVo.setSbxxid(sbxxid);
+    	sbxxVo.setSbzt("3");;
+        SbxxVo vo = sbxxDao.querySbxxbyParam(sbxxVo);
+        if(vo==null){
+        	return Utils.createRetMap(CONTANTS.RETURN_FAIL, "未查询到申报信息！");
+        }
+        return Utils.createRetMap(CONTANTS.RETURN_SUCCESS, "处理成功！", vo);
+        
+    }
+
+	@Override
+	public Map<String, Object> querysbxxbyNsrsbh(String nsrsbh) {
+		SbxxVo sbxxVo = new SbxxVo();
+    	sbxxVo.setNsrsbh(nsrsbh);
+    	sbxxVo.setSbzt("3");;
+        SbxxVo vo = sbxxDao.querySbxxbyParam(sbxxVo);
+        if(vo==null){
+        	return Utils.createRetMap(CONTANTS.RETURN_FAIL, "未查询到申报信息！");
+        }
+        return Utils.createRetMap(CONTANTS.RETURN_SUCCESS, "处理成功！", vo);
+	}
+	
+	/**
+	 * Title:根据验证码获取申报信息id
+	 * Description:
+	 **/
+	@Override
+	public Map<String, Object> yzmtq(String tqyzm) {
+		if(null==tqyzm||tqyzm.equals("")){
+			 return Utils.createRetMap(CONTANTS.RETURN_FAIL, "提取验证码不能为空！");
+		}
+		SbxxVo sbxx=new SbxxVo();
+		sbxx.setTqyzm(tqyzm);
+		sbxx.setSbzt("3");
+		sbxx.setQpfs(CONTANTS.QPFS_ZXTQ);
+		sbxx=sbxxDao.querySbxxbyParam(sbxx);
+		if(null==sbxx.getId()||sbxx.getId().equals("")){
+			 return Utils.createRetMap(CONTANTS.RETURN_FAIL, "未查询到申报信息！");
+		}else{
+			 return Utils.createRetMap(CONTANTS.RETURN_SUCCESS, "验证通过！",sbxx.getId());
+		}
+	    
+	}
+
+}
